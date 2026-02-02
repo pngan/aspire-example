@@ -18,6 +18,19 @@ dotnet test AspireApp/AspireApp.Tests/AspireApp.Tests.csproj
 dotnet test AspireApp/AspireApp.Tests/AspireApp.Tests.csproj --filter "FullyQualifiedName~GetWebResourceRootReturnsOkStatusCode"
 ```
 
+## Publish and Deploy Commands
+
+```powershell
+# Publish to Docker Compose (generates artifacts/ directory)
+aspire publish --output-path artifacts --project AspireApp/AspireApp.AppHost/AspireApp.AppHost.csproj
+
+# Deploy with Docker Compose (on target machine)
+cd artifacts
+docker compose up -d --build
+```
+
+See `deploy/README.md` for full deployment instructions including Caddy reverse proxy setup.
+
 ## Architecture
 
 This is a .NET Aspire distributed application with the following structure:

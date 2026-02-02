@@ -13,4 +13,8 @@
     <ProjectReference Include="..\AspireApp.Web\AspireApp.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Docker" Version="13.1.0-preview.1.25616.3" />
+  </ItemGroup>
+
 </Project>

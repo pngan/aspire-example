@@ -1,0 +1,21 @@
+# Caddy Configuration for Aspire App
+# ===================================
+# Add this to your existing Caddyfile on the reverse proxy machine (192.168.1.2)
+
+app.nganfamily.com {
+    # Automatic HTTPS via Let's Encrypt
+    # Caddy handles certificate provisioning and renewal automatically
+    
+    # Reverse proxy to Aspire webfrontend on the home machine
+    reverse_proxy 192.168.1.11:8080 {
+        # Health check to verify backend is available
+        health_uri /health
+        health_interval 30s
+        health_timeout 10s
+        
+        # Pass original headers for proper request handling
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
