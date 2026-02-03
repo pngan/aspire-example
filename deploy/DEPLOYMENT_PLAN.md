@@ -26,13 +26,13 @@ Create a deployment workflow that:
 - [x] **COMPLETE**: Verify baseline tests - All 20 tests passing against local environment!
 
 ### Phase 1: Docker Hub Publishing Setup
-- [ ] Create GitHub Actions workflow file (`.github/workflows/docker-publish.yml`)
+- [x] Create GitHub Actions workflow file (`.github/workflows/docker-publish.yml`)
   - Manual trigger (workflow_dispatch)
   - Build both webfrontend and apiservice images
   - Push to Docker Hub with version tags and `latest`
   - Use GitHub secrets for DOCKERHUB_USERNAME and DOCKERHUB_TOKEN
-- [ ] Update README.md with instructions for setting up GitHub secrets
-- [ ] **Playwright Verification**: No changes to app functionality, skip E2E tests
+- [x] Update README.md with instructions for setting up GitHub secrets
+- [x] **Playwright Verification**: No changes to app functionality, skip E2E tests
 
 ### Phase 2: Docker Compose Configurations
 - [ ] Create `docker-compose.production.yaml` that pulls from Docker Hub

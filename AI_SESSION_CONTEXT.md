@@ -53,9 +53,9 @@ docker compose up -d --build
 ## Active Work
 **Current Plan**: `deploy/DEPLOYMENT_PLAN.md` (Created: 2026-02-03)
 - ✅ **Phase 0 Complete**: Playwright test suite with 20 passing E2E tests
-- 🚧 **Next**: Phase 1 - Docker Hub publishing with GitHub Actions
+- ✅ **Phase 1 Complete**: GitHub Actions workflow for Docker Hub publishing
+- 🚧 **Next**: Phase 2 - Docker Compose configurations (dev vs production)
 - Adding PowerShell and Bash helper scripts for deployment to 192.168.1.11
-- Creating dual docker-compose setup (dev vs production)
 
 ## Playwright Test Configuration
 - **Local**: `https://localhost:7024` (development, accepts self-signed certs)

@@ -2,6 +2,14 @@
 
 This guide explains how to deploy the Aspire app using Docker Compose with a Caddy reverse proxy.
 
+## Table of Contents
+1. [Architecture](#architecture)
+2. [Prerequisites](#prerequisites)
+3. [Docker Hub Publishing](#docker-hub-publishing)
+4. [Deployment Steps](#deployment-steps)
+5. [Reverse Proxy Configuration](#reverse-proxy-configuration)
+6. [Troubleshooting](#troubleshooting)
+
 ## Architecture
 
 ```
@@ -21,6 +29,29 @@ Internet → Router (ports 80/443) → Caddy (192.168.1.2) → Aspire webfronten
 - Caddy reverse proxy running on 192.168.1.2
 - Ports 80 and 443 forwarded from router to Caddy machine
 - Firewall allows traffic from 192.168.1.2 to 192.168.1.11:8080
+
+## Docker Hub Publishing
+
+This project uses GitHub Actions to publish Docker images to Docker Hub for easy deployment.
+
+### Setup GitHub Secrets
+
+1. Go to your GitHub repository → Settings → Secrets and variables → Actions
+2. Add the following secrets:
+   - `DOCKERHUB_USERNAME`: Your Docker Hub username
+   - `DOCKERHUB_TOKEN`: Your Docker Hub access token (create at https://hub.docker.com/settings/security)
+
+### Publish Images
+
+1. Go to Actions tab in your GitHub repository
+2. Select "Publish Docker Images" workflow
+3. Click "Run workflow"
+4. Enter a version tag (e.g., `v1.0.0`)
+5. Click "Run workflow"
+
+This will publish:
+- `<username>/aspireapp-webfrontend:v1.0.0` and `latest`
+- `<username>/aspireapp-apiservice:v1.0.0` and `latest`
 
 ## Deployment Steps
 
