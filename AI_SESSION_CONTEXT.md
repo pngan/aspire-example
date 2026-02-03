@@ -54,11 +54,11 @@ docker compose up -d --build
 **Current Plan**: `deploy/DEPLOYMENT_PLAN.md` (Created: 2026-02-03)
 - ✅ **Phase 0 Complete**: Playwright test suite with 20 passing E2E tests
 - ✅ **Phase 1 Complete**: GitHub Actions workflow for Docker Hub publishing (verified successful)
-  - Workflow run #2 published images successfully
-  - Fixed Docker build context issue
-  - Images: `pngan/aspireapp-webfrontend` and `pngan/aspireapp-apiservice`
-- 🚧 **Next**: Phase 2 - Docker Compose configurations (dev vs production)
-- Adding PowerShell and Bash helper scripts for deployment to 192.168.1.11
+- ✅ **Phase 2 Complete**: Docker Compose configurations (dev vs production)
+- ✅ **Phase 3 Complete**: PowerShell deployment script with SSH automation
+- ✅ **Phase 4 Complete**: Bash helper scripts for Ubuntu server
+- ✅ **Phase 5 Complete**: Updated documentation with new deployment workflows
+- 🚧 **Next**: Phase 6 - Final testing and validation
 
 ## Playwright Test Configuration
 - **Local**: `https://localhost:7024` (development, accepts self-signed certs)

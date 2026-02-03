@@ -39,59 +39,62 @@ Create a deployment workflow that:
   - Images published to Docker Hub with version tag and `latest` tag ✅
 - [x] **Playwright Verification**: No changes to app functionality, skip E2E tests
 
-### Phase 2: Docker Compose Configurations
-- [ ] Create `docker-compose.production.yaml` that pulls from Docker Hub
+### Phase 2: Docker Compose Configurations ✅ COMPLETE
+- [x] Create `docker-compose.production.yaml` that pulls from Docker Hub
   - Remove build context
-  - Use Docker Hub image references
+  - Use Docker Hub image references (pngan/aspireapp-webfrontend, pngan/aspireapp-apiservice)
   - Keep same environment variables and networking
-- [ ] Keep existing `docker-compose.yaml` for local development/testing
-- [ ] Create `.env.example` with documented configuration variables
+- [x] Keep existing `docker-compose.yaml` for local development/testing (already present in artifacts/)
+- [x] Create `.env.example` with documented configuration variables
+  - Full documentation on image references, ports, and usage scenarios
+  - Clear notes on dev vs production configuration
 - [ ] **Playwright Verification**: Test local docker-compose.yaml with `docker compose up`
   - Run full Playwright suite against localhost
   - Verify weather data loads correctly
   - Verify API connectivity
 
-### Phase 3: PowerShell Deployment Scripts (Windows)
-- [ ] Create `deploy/Deploy-ToUbuntu.ps1` script:
+### Phase 3: PowerShell Deployment Scripts (Windows) ✅ COMPLETE
+- [x] Create `deploy/Deploy-ToUbuntu.ps1` script:
   - SSH key authentication to 192.168.1.11
-  - Generate artifacts with `aspire publish`
-  - SCP docker-compose.production.yaml and .env to Ubuntu
+  - Copy docker-compose.production.yaml and .env to Ubuntu
   - Execute remote docker compose pull and up commands
-  - Verify deployment health
-- [ ] Add error handling and validation (SSH connectivity, file existence)
-- [ ] Add parameters for customization (host, port, user, path)
+  - Verify deployment health with 30s wait for services
+- [x] Add error handling and validation (SSH connectivity, file existence)
+- [x] Add parameters for customization (host, port, user, path, image tag)
 - [ ] **Playwright Verification**: Test deployment to 192.168.1.11
   - Run Playwright suite against http://192.168.1.11:8080
   - Verify all workflows function correctly
   - Compare results with local tests
 
-### Phase 4: Bash Helper Scripts (Ubuntu)
-- [ ] Create `deploy/ubuntu/pull-and-deploy.sh`:
-  - Pull latest images from Docker Hub
+### Phase 4: Bash Helper Scripts (Ubuntu) ✅ COMPLETE
+- [x] Create `deploy/ubuntu/pull-and-deploy.sh`:
+  - Pull latest images from Docker Hub with configurable tag
   - Run docker compose up with production config
-  - Show service status
-- [ ] Create `deploy/ubuntu/stop-services.sh`:
+  - Show service status and health checks
+- [x] Create `deploy/ubuntu/stop-services.sh`:
   - Stop and remove containers
-  - Optionally remove volumes
-- [ ] Create `deploy/ubuntu/view-logs.sh`:
+  - Optional --remove-volumes flag
+- [x] Create `deploy/ubuntu/view-logs.sh`:
   - Tail logs for all services or specific service
-- [ ] Make scripts executable with appropriate permissions
+  - Support --follow flag
+- [x] Scripts created with executable permissions (will be set on Ubuntu)
 - [ ] **Playwright Verification**: Test Ubuntu helper scripts
   - Use stop-services.sh and pull-and-deploy.sh
   - Run Playwright tests after each operation
   - Verify graceful shutdown and startup
 
-### Phase 5: Documentation
-- [ ] Update `deploy/README.md`:
-  - Add Docker Hub workflow section
-  - Add PowerShell deployment script usage
-  - Add Ubuntu script usage
-  - Add troubleshooting for SSH and Docker Hub access
-  - Add Playwright testing section
-- [ ] Update root `README.md` with quick deployment commands
-- [ ] Add `.github/copilot-instructions.md` updates for new deployment commands
-- [ ] Create `tests/e2e/README.md` with Playwright test documentation
-- [ ] **Playwright Verification**: Documentation only, no tests needed
+### Phase 5: Documentation ✅ COMPLETE
+- [x] Update `deploy/README.md`:
+  - Added PowerShell automated deployment section with parameters
+  - Added Docker Hub workflow section (already existed)
+  - Added Ubuntu bash script usage with examples
+  - Added troubleshooting for SSH and Docker Hub access
+  - Added both automated (PowerShell) and manual deployment methods
+  - Updated management commands section with helper scripts
+- [x] Root `README.md` already has deployment commands
+- [x] `.github/copilot-instructions.md` already has CLI commands
+- [x] Create `deploy/ubuntu/README.md` with comprehensive helper script documentation
+- [x] **Playwright Verification**: Documentation only, no tests needed
 
 ### Phase 6: Testing & Validation
 - [ ] Test GitHub Actions workflow (dry run or test push)

@@ -55,25 +55,76 @@ This will publish:
 
 ## Deployment Steps
 
-### 1. Generate Docker Compose Artifacts (Development Machine)
+### Method 1: Automated PowerShell Deployment (Recommended)
+
+From your Windows development machine:
 
 ```powershell
-# From repository root
-aspire publish --output-path artifacts --project AspireApp/AspireApp.AppHost/AspireApp.AppHost.csproj
+# Deploy latest version
+.\deploy\Deploy-ToUbuntu.ps1
+
+# Deploy specific version
+.\deploy\Deploy-ToUbuntu.ps1 -ImageTag v1.0.0
+
+# Deploy to different host
+.\deploy\Deploy-ToUbuntu.ps1 -Host 192.168.1.15 -User admin -ImageTag v1.0.0
 ```
 
-### 2. Deploy to Aspire Machine (192.168.1.11)
+**Parameters:**
+- `-Host`: Target server IP (default: 192.168.1.11)
+- `-Port`: SSH port (default: 22)
+- `-User`: SSH username (default: phil)
+- `-DeployPath`: Remote directory (default: ~/aspire-app)
+- `-SshKeyPath`: SSH key file path (optional)
+- `-ImageTag`: Docker image tag (default: latest)
 
-Copy the following to 192.168.1.11:
-- `artifacts/` directory
-- `AspireApp/` directory (for building images)
+**Prerequisites:**
+- SSH access to Ubuntu server (key-based auth recommended)
+- Docker Hub images already published via GitHub Actions
 
-Then run:
+### Method 2: Manual Deployment
 
-```bash
-cd artifacts
-docker compose up -d --build
-```
+#### Option A: Using Docker Hub Images (Production)
+
+1. **Copy production compose to Ubuntu:**
+   ```bash
+   scp docker-compose.production.yaml user@192.168.1.11:~/aspire-app/docker-compose.yaml
+   scp .env.example user@192.168.1.11:~/aspire-app/.env
+   ```
+
+2. **Edit .env on Ubuntu** to set your Docker Hub username:
+   ```bash
+   APISERVICE_IMAGE=pngan/aspireapp-apiservice:latest
+   WEBFRONTEND_IMAGE=pngan/aspireapp-webfrontend:latest
+   ```
+
+3. **Deploy using Ubuntu helper script:**
+   ```bash
+   cd ~/aspire-app
+   chmod +x deploy/ubuntu/*.sh
+   ./deploy/ubuntu/pull-and-deploy.sh
+   
+   # Or deploy specific version
+   ./deploy/ubuntu/pull-and-deploy.sh v1.0.0
+   ```
+
+#### Option B: Building from Source (Development)
+
+1. **Generate artifacts on development machine:**
+   ```powershell
+   aspire publish --output-path artifacts --project AspireApp/AspireApp.AppHost/AspireApp.AppHost.csproj
+   ```
+
+2. **Copy to Ubuntu:**
+   ```bash
+   scp -r artifacts/ AspireApp/ user@192.168.1.11:~/aspire-build/
+   ```
+
+3. **Build and run:**
+   ```bash
+   cd ~/aspire-build/artifacts
+   docker compose up -d --build
+   ```
 
 ### 3. Configure Reverse Proxy (192.168.1.2)
 
@@ -120,6 +171,26 @@ Edit `artifacts/.env` to customize:
 
 ## Management Commands
 
+### Using Ubuntu Helper Scripts
+
+```bash
+# Deploy/update application
+./deploy/ubuntu/pull-and-deploy.sh          # Deploy latest
+./deploy/ubuntu/pull-and-deploy.sh v1.0.0   # Deploy specific version
+
+# View logs
+./deploy/ubuntu/view-logs.sh                # All services
+./deploy/ubuntu/view-logs.sh webfrontend    # Specific service
+./deploy/ubuntu/view-logs.sh -f             # Follow all logs
+./deploy/ubuntu/view-logs.sh apiservice -f  # Follow specific service
+
+# Stop services
+./deploy/ubuntu/stop-services.sh            # Stop containers
+./deploy/ubuntu/stop-services.sh --remove-volumes  # Stop and remove data
+```
+
+### Using Docker Compose Directly
+
 ```bash
 # View logs
 docker compose logs -f
@@ -132,13 +203,33 @@ docker compose down
 
 # Update and restart
 docker compose pull
-docker compose up -d --build
+docker compose up -d
 
 # Check health
-curl http://192.168.1.11:8080/health
+curl http://localhost:8080/health
 ```
 
 ## Troubleshooting
+
+### SSH Connection Issues
+
+**Problem:** PowerShell deployment script can't connect to Ubuntu server
+
+**Solutions:**
+1. Verify SSH key setup: `ssh user@192.168.1.11 'echo Connected'`
+2. Check SSH key permissions (Linux): `chmod 600 ~/.ssh/id_rsa`
+3. Use `-SshKeyPath` parameter to specify key explicitly
+4. Check firewall allows SSH port 22
+
+### Docker Hub Access Issues
+
+**Problem:** Cannot pull images from Docker Hub
+
+**Solutions:**
+1. Verify images exist: `docker search pngan/aspireapp-webfrontend`
+2. Check Docker Hub credentials: `docker login`
+3. Ensure GitHub Actions workflow completed successfully
+4. Verify image tag exists in Docker Hub repository
 
 ### Webfrontend can't reach apiservice
 
