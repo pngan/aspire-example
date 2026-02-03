@@ -28,7 +28,7 @@ jobs:
       - name: Build and push Web Frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./AspireApp
+          context: .
           file: ./AspireApp/AspireApp.Web/Dockerfile
           push: true
           tags: |
@@ -40,7 +40,7 @@ jobs:
       - name: Build and push API Service
         uses: docker/build-push-action@v5
         with:
-          context: ./AspireApp
+          context: .
           file: ./AspireApp/AspireApp.ApiService/Dockerfile
           push: true
           tags: |
