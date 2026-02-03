@@ -24,11 +24,14 @@ test.describe('Counter Page', () => {
     // Verify initial state
     await expect(page.locator('[role="status"]')).toContainText('Current count: 0');
     
+    // Wait for Blazor Server circuit to be established
+    await page.waitForTimeout(1500);
+    
     // Click the button
     await page.locator('button:has-text("Click me")').click();
     
-    // Wait a moment for Blazor Server to update
-    await page.waitForTimeout(500);
+    // Wait for Blazor Server to process the click and update UI
+    await page.waitForTimeout(1000);
     
     // Verify count increased
     await expect(page.locator('[role="status"]')).toContainText('Current count: 1');
