@@ -482,3 +482,11 @@ $RECYCLE.BIN/
 *.swp
 
 artifacts/
+
+# Node.js / Playwright
+node_modules/
+package-lock.json
+playwright-report/
+test-results/
+playwright/.cache/
+!.env.example

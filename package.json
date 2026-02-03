@@ -1,0 +1,25 @@
+{
+  "name": "aspire-example",
+  "version": "1.0.0",
+  "description": ".NET Aspire Example Application",
+  "scripts": {
+    "test": "playwright test",
+    "test:local": "playwright test --config=playwright.config.ts --project=local",
+    "test:ubuntu": "playwright test --config=playwright.config.ts --project=ubuntu",
+    "test:production": "playwright test --config=playwright.config.ts --project=production",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug"
+  },
+  "keywords": [
+    "aspire",
+    "blazor",
+    "dotnet"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@executeautomation/playwright-mcp-server": "^1.0.12",
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.0.0"
+  }
+}
