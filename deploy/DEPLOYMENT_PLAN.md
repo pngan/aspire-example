@@ -25,13 +25,18 @@ Create a deployment workflow that:
 - [x] Configure environment-specific base URLs
 - [x] **COMPLETE**: Verify baseline tests - All 20 tests passing against local environment!
 
-### Phase 1: Docker Hub Publishing Setup
+### Phase 1: Docker Hub Publishing Setup ✅ COMPLETE
 - [x] Create GitHub Actions workflow file (`.github/workflows/docker-publish.yml`)
   - Manual trigger (workflow_dispatch)
   - Build both webfrontend and apiservice images
   - Push to Docker Hub with version tags and `latest`
   - Use GitHub secrets for DOCKERHUB_USERNAME and DOCKERHUB_TOKEN
 - [x] Update README.md with instructions for setting up GitHub secrets
+- [x] Fix Docker build context issue (changed from ./AspireApp to . repository root)
+- [x] **Verification**: Workflow run #2 completed successfully
+  - Web Frontend build: 50 seconds ✅
+  - API Service build: 30 seconds ✅
+  - Images published to Docker Hub with version tag and `latest` tag ✅
 - [x] **Playwright Verification**: No changes to app functionality, skip E2E tests
 
 ### Phase 2: Docker Compose Configurations
