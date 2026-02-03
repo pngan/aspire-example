@@ -28,7 +28,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Only use HTTPS redirection if running behind a reverse proxy with HTTPS configured
+// For direct HTTP access (e.g., 192.168.1.11:8080), skip HTTPS redirection to allow Blazor Server SignalR to work
+if (!string.IsNullOrEmpty(app.Configuration["HTTPS_PORT"]) || app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAntiforgery();
 
