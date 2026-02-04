@@ -13,22 +13,22 @@ This guide explains how to deploy the Aspire app using Docker Compose with a Cad
 ## Architecture
 
 ```
-Internet → Router (ports 80/443) → Caddy (192.168.1.2) → Aspire webfrontend (192.168.1.11:8080)
+Internet → Router (ports 80/443) → Caddy (192.168.1.4) → Aspire webfrontend (192.168.1.11:8080)
                                                         ↓
                                                 apiservice (internal)
 ```
 
-- **Domain**: app.nganfamily.com
+- **Domain**: apps.nganfamily.com
 - **SSL**: Automatic via Let's Encrypt (Caddy)
 - **Aspire machine**: 192.168.1.11
-- **Proxy machine**: 192.168.1.2
+- **Proxy machine**: 192.168.1.4
 
 ## Prerequisites
 
 - Docker and Docker Compose installed on 192.168.1.11
-- Caddy reverse proxy running on 192.168.1.2
+- Caddy reverse proxy running on 192.168.1.4
 - Ports 80 and 443 forwarded from router to Caddy machine
-- Firewall allows traffic from 192.168.1.2 to 192.168.1.11:8080
+- Firewall allows traffic from 192.168.1.4 to 192.168.1.11:8080
 
 ## Docker Hub Publishing
 
@@ -126,12 +126,12 @@ From your Windows development machine:
    docker compose up -d --build
    ```
 
-### 3. Configure Reverse Proxy (192.168.1.2)
+### 3. Configure Reverse Proxy (192.168.1.4)
 
 Add the contents of `deploy/Caddyfile.aspire` to your existing Caddyfile:
 
 ```caddyfile
-app.nganfamily.com {
+apps.nganfamily.com {
     reverse_proxy 192.168.1.11:8080 {
         health_uri /health
         health_interval 30s
@@ -240,7 +240,7 @@ docker network inspect artifacts_aspire
 
 ### Caddy can't reach webfrontend
 
-1. Verify firewall allows 192.168.1.2 → 192.168.1.11:8080
+1. Verify firewall allows 192.168.1.4 → 192.168.1.11:8080
 2. Check webfrontend is healthy: `curl http://192.168.1.11:8080/health`
 3. Check Caddy logs: `docker logs caddy`
 

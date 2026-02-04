@@ -112,7 +112,17 @@ Create a deployment workflow that:
     - ✅ Weather API: 5/5
     - ✅ Counter: 3/5 (2 have timing sensitivity, manually verified working)
   - [x] All core functionality confirmed operational
-- [ ] Future: Test against app.nganfamily.com via Caddy reverse proxy (deferred)
+### Phase 7: Reverse Proxy Configuration (Caddy) ✅ COMPLETE
+- [x] Configure Caddy reverse proxy on 192.168.1.4 (updated from 192.168.1.2)
+- [x] Create Caddy configuration snippet (`deploy/Caddyfile.aspire`)
+- [x] Configure automatic HTTPS for `apps.nganfamily.com`
+- [x] Verify connectivity:
+  - [x] Internal: `curl http://192.168.1.11:8080/health` (OK)
+  - [x] Caddy Host: `curl https://apps.nganfamily.com/health` (OK)
+  - [x] External: Browser access to `https://apps.nganfamily.com` (Verified)
+- [x] **Playwright Verification**:
+  - [x] Manual verification of external access successful
+  - [ ] Future: Add automated Playwright tests for external domain
 
 ## Key Decisions
 1. **GitHub Actions**: Manual `workflow_dispatch` trigger for controlled releases
@@ -121,12 +131,13 @@ Create a deployment workflow that:
 4. **Scripts**: PowerShell for Windows dev machine, Bash for Ubuntu operations
 5. **Image Naming**: Using environment variables in docker-compose for flexible image references
 6. **Playwright Testing**: Create reusable test suite, verify after each major phase, test both local and deployed environments
+7. **Reverse Proxy**: Use Caddy on 192.168.1.4 for SSL termination and forwarding to 192.168.1.11
 
 ## Notes & Considerations
 - Docker Hub repository must exist (e.g., `username/aspireapp-webfrontend`, `username/aspireapp-apiservice`)
 - SSH key must be set up between Windows dev machine and Ubuntu server
 - User on Ubuntu machine (192.168.1.11) must have Docker permissions (in `docker` group)
-- Existing Caddy reverse proxy setup (192.168.1.2) remains unchanged
+- Caddy reverse proxy now configured on 192.168.1.4 (router forwards ports 80/443 here)
 - GitHub Actions will need DOCKERHUB_USERNAME and DOCKERHUB_TOKEN secrets configured
 - The PowerShell script assumes SSH client is available (Windows 10+ includes OpenSSH)
 - Production docker-compose will respect existing environment variables for customization
