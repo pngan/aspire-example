@@ -11,12 +11,33 @@ dotnet build AspireApp/AspireApp.sln
 # Run the AppHost (starts all services)
 dotnet run --project AspireApp/AspireApp.AppHost/AspireApp.AppHost.csproj
 
-# Run tests
+# Run unit/integration tests
 dotnet test AspireApp/AspireApp.Tests/AspireApp.Tests.csproj
 
 # Run a single test
 dotnet test AspireApp/AspireApp.Tests/AspireApp.Tests.csproj --filter "FullyQualifiedName~GetWebResourceRootReturnsOkStatusCode"
 ```
+
+## Playwright E2E Tests
+
+Playwright tests verify the full application stack end-to-end. Run these at opportune times, not on every build:
+
+```powershell
+# Run against different environments
+npm run test:local       # Local dev (https://localhost:7024)
+npm run test:ubuntu      # Ubuntu deployment (http://192.168.1.11:8080)
+npm run test:production  # Production via Caddy (https://apps.nganfamily.com)
+```
+
+**When to run Playwright tests:**
+- ✅ Before committing significant changes
+- ✅ After deployment to verify functionality
+- ✅ When testing interactive features (Blazor components)
+- ✅ Before creating pull requests
+- ❌ Not on every small code change or build
+- ❌ Not during active development iterations
+
+**Note**: Tests take ~10 seconds per environment. The test suite includes 20 E2E tests covering home, weather, counter pages, and health endpoints.
 
 ## Publish and Deploy Commands
 
@@ -64,6 +85,13 @@ This is a .NET Aspire distributed application with the following structure:
 - Tests create full distributed application using `DistributedApplicationTestingBuilder`
 - Integration tests verify end-to-end service communication
 - Uses `ResourceNotifications.WaitForResourceHealthyAsync()` to ensure services are ready before testing
+
+### Playwright E2E Tests (`tests/e2e/`)
+- 20 end-to-end tests covering full user workflows
+- Tests against multiple environments (local dev, Ubuntu deployment, production)
+- Verifies: page loads, navigation, API integration, Blazor interactivity, health endpoints
+- Run strategically at commit/deployment time, not on every build
+- See `tests/e2e/` directory for test suites
 
 ## Key Conventions
 
