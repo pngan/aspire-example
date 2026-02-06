@@ -40,11 +40,15 @@ test.describe('Counter Page', () => {
   test('should increment counter multiple times', async ({ page }) => {
     await page.goto('/counter');
     
+    // Wait for Blazor Server circuit to be established
+    await page.waitForTimeout(1500);
+    
     const button = page.locator('button:has-text("Click me")');
     
     // Click button 5 times
     for (let i = 1; i <= 5; i++) {
       await button.click();
+      await page.waitForTimeout(500);
       await expect(page.locator('[role="status"]')).toContainText(`Current count: ${i}`);
     }
   });
@@ -52,10 +56,15 @@ test.describe('Counter Page', () => {
   test('should maintain counter state during page interaction', async ({ page }) => {
     await page.goto('/counter');
     
+    // Wait for Blazor Server circuit to be established
+    await page.waitForTimeout(1500);
+    
     // Click button twice
     const button = page.locator('button:has-text("Click me")');
     await button.click();
+    await page.waitForTimeout(500);
     await button.click();
+    await page.waitForTimeout(500);
     
     // Verify count is 2
     await expect(page.locator('[role="status"]')).toContainText('Current count: 2');
